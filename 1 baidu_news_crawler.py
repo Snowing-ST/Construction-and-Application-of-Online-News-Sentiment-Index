@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 Created on Sun Jul 22 13:32:03 2018
-类
+crawl the new related with key word from Baidu News 
 
 @author: situ
 """
@@ -18,21 +18,25 @@ from multiprocessing import Pool
 class baidu_news:
     
     def __init__(self,word,year):
-        self.word = word
-        self.year = year
-        self.mode = "title"
+        self.word = word #search key word
+        self.year = year #set the year of news you want to get
+        self.mode = "title" #get title and abstract or only title 
     
     def get_url(self,page):
+        # get the url of search web page i
         bt = str(self.year)+"-01-01 00:00:00"
         et = str(self.year)+"-12-31 00:00:00"
         bts = int(time.mktime(time.strptime(bt, "%Y-%m-%d %H:%M:%S")))#时间戳
         ets = int(time.mktime(time.strptime(et, "%Y-%m-%d %H:%M:%S")))
         
-        pn = 20*(page-1)# 页码对应：0 20 40 60
+        pn = 20*(page-1)# page 1 2 3 4 is correspond to 0 20 40 60
+
         if self.mode=="news":
+            # get the title and abstract
             qword = urlencode({'word': self.word.encode('utf-8')})
             url = "http://news.baidu.com/ns?%s&pn=%d&cl=2&ct=1&tn=newsdy&rn=20&ie=utf-8&bt=%d&et=%d"%(qword,pn,bts,ets)
         if self.mode=="title":
+            #get only title
             qword = "word=intitle%3A%28"+self.word+"%29"
             url = "http://news.baidu.com/ns?%s&pn=%d&cl=2&ct=0&tn=newstitledy&rn=20&ie=utf-8&bt=%d&et=%d"%(qword,pn,bts,ets)
         return url
@@ -40,6 +44,7 @@ class baidu_news:
 
 
     def crawl(self,word):
+        #crawl the news related with search key word
         self.word = word
         i = 1
         is_nextpage=True
@@ -54,13 +59,11 @@ class baidu_news:
             result.encoding = 'utf-8'
             selector = etree.HTML(result.text)  
             if self.mode=="news":
-    
                 for item in selector.xpath('//*[@class="result"]'):
         #            item = selector.xpath('//*[@class="result"]')[0]
                     newsdict = {"title":[0],"date":[0],"time":[0],"source":[0],
                                 "abstract":[0],"href":[0]}
                     onenews = pd.DataFrame(newsdict)
-                    
                     onenews["title"] = item.xpath('h3/a')[0].xpath("string(.)").strip()
                     print(onenews["title"])
                     onenews["href"] = item.xpath('h3/a/@href')[0]
@@ -73,7 +76,6 @@ class baidu_news:
     #                item = selector.xpath('//*[@class="result title"]')[0]
                     newsdict = {"title":[0],"date":[0],"time":[0],"source":[0],"href":[0]}
                     onenews = pd.DataFrame(newsdict)
-                    
                     onenews["title"] = item.xpath('h3/a')[0].xpath("string(.)").strip()
                     onenews["href"] = item.xpath('h3/a/@href')[0]
                     info = item.xpath('div')[0].xpath("string(.)")
@@ -106,19 +108,17 @@ def main():
 #        para = keywords["keyword"][keywords["class"]==cl].tolist()
 #    para = keywords["keyword"][keywords["class"]=="消费"].tolist()
     
-    #手动输入关键词
+    #please enter the search key word
     para = [
 "中国贫富差距"
-
-
-            ]
+           ]
     for y in range(2009,2019,1):
         baidu_news_crawl = baidu_news(word = "",year=y)
         p=Pool(len(para))
         p.map(baidu_news_crawl.crawl,para)      
         p.close()
         p.join()
-    print("爬取成功，请打开【"+os.getcwd()+"】查看详情")
+    print("finished successfully，please open【"+os.getcwd()+"】to see the details")
 
 
 if __name__ == '__main__':
