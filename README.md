@@ -87,3 +87,9 @@ The paper starts from the six dimensions (economic development, employment statu
 ## Research Results
 The study shows that the correlation between the Online News Sentiment Index and the China Consumer Confidence Index (CCCI) is as high as 0.86, and has a certain leading effect. The correlation between the fitted index and CCCI is increased to 0.94. The index shows obvious similarity, preemptiveness or complementarity to relevant economic macro indicators. The above results reflect the effectiveness of the Online News Sentiment Index, indicating that online public opinion imposes a certain impact on consumer confidence, and consumer confidence changes can be reflected in news texts. At the same time, the results also show that the time-consuming and costly questionnaire method can be substituted by mining the emotional tendency of online news in a timely and automatic way through computer programs.
 
+## Postscript
+Maybe this master thesis would be the last time for me to code. Although I wish not...
+I hope this paper get *Excellent graduation thesis* and published in foreign journals as it would be a pleasure memory for my master's career.
+
+
+Thanks everyone!
