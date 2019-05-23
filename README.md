@@ -82,6 +82,8 @@ The paper starts from the six dimensions (economic development, employment statu
 
 ![use six sub-indexes to predict CCCI](https://github.com/Snowing-ST/Construction-and-Application-of-Online-News-Sentiment-Index/blob/master/pic/prediction2.jpg)
 
+![Time Series Analysis](https://github.com/Snowing-ST/Construction-and-Application-of-Online-News-Sentiment-Index/blob/master/pic/time%20series%20analysis.jpg)
+
 ## Research Results
 The study shows that the correlation between the Online News Sentiment Index and the China Consumer Confidence Index (CCCI) is as high as 0.86, and has a certain leading effect. The correlation between the fitted index and CCCI is increased to 0.94. The index shows obvious similarity, preemptiveness or complementarity to relevant economic macro indicators. The above results reflect the effectiveness of the Online News Sentiment Index, indicating that online public opinion imposes a certain impact on consumer confidence, and consumer confidence changes can be reflected in news texts. At the same time, the results also show that the time-consuming and costly questionnaire method can be substituted by mining the emotional tendency of online news in a timely and automatic way through computer programs.
 
