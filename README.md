@@ -2,7 +2,7 @@
 # 基于深度学习文本分类的网络新闻情感指数编制及应用研究
 
 ## abstract
-The Consumer Confidence Index is an indicator of the strength of consumer confidence.Since the first consumer confidence index was introduced in 1946, consumer confidence index surveys have often been conducted by means of telephone surveys or questionnaires. In recent years, the survey process has gradually led to some problems, such as the increase in the rate of refusal, and the proportion of elder interviewees is too large, which has a certain impact on the validity of the index. In addition to strengthen the quality control in the design and implementation of the index survey program, we can make a new interpretation of the problem through the big data mining method.
+The Consumer Confidence Index is an indicator of the strength of consumer confidence. Since the first consumer confidence index was introduced in 1946, consumer confidence index surveys have often been conducted by means of telephone surveys or questionnaires. In recent years, the survey process has gradually led to some problems, such as the increase in the rate of refusal, and the proportion of elder interviewees is too large, which has a certain impact on the validity of the index. In addition to strengthen the quality control in the design and implementation of the index survey program, we can make a new interpretation of the problem through the big data mining method.
 
 With the rapid development of Internet technology, the Internet has replaced traditional paper media as the main channel for people to obtain and express opinions. The news reflects the public's emotional life status to varying degrees, and people's emotional state is also affected by network media to some extent. Following this intuitive logic, we attempts to construct a consumer confidence index based on online news texts by mining the emotional tendencies of consumers, thereby avoiding some problems in the traditional consumer confidence index survey, and it is timelier and thriftier. However, because there is no authoritative research to prove the direct connection between online news and consumer psychology and behavior, in order to avoid disputes, we refers to the consumer confidence index based on the online news as “Online News Sentiment Index”, which is not directly related to “consumers”, but can be used to measure the attitudes and opinions of consumers reflected in the news text.
 
@@ -12,57 +12,52 @@ The paper starts from the six dimensions (economic development, employment statu
 ## main steps and codes
 ### Construction of *Online News Sentiment Index*
 1. crawling the news from [Baidu News](https://news.baidu.com/)
-
 - code: [baidu_news_crawler.py](https://github.com/Snowing-ST/Construction-and-Application-of-Online-News-Sentiment-Index/blob/master/1%20baidu_news_crawler.py)
 - description:
-
     - input: search key words and time range of news
-        
     - output: news information in csv type 
+    - some key words of six dimensions
+
+    |就业	|投资	|物价	|生活状况	|经济	|购房
+    | ------ | ------ | ------ |------ | ------ | ------ |
+    |就业率，失业率，就业形势，就业压力，就业前景，就业满意度，求职压力等 	|市场情绪，投资意愿，投资热情，投资情绪等 |通胀预期，通胀压力，物价涨幅，居民物价，物价走势，物价指数，物价满意度等|居民收入，居民幸福，消费意愿，居民消费支出，居民消费能力，生活满意度，居民生活质量等 |经济形势，宏观经济，目前经济，中国经济前景，宏观经济数据，中国的经济发展态势，宏观经济运行等|楼市成交量，购房压力，购房成本，楼市热度，楼市前景，购房意愿，居民楼市信心，购房支出，房价满意度，房价预期等|
+
 
 2. preprocessing and conbining the news 
 - code: [get_all_df.py](https://github.com/Snowing-ST/Construction-and-Application-of-Online-News-Sentiment-Index/blob/master/2%20get_all_df.py)
-
 - description:
-
     - delete duplicated and foreign news
-
     - conbine all the news into all_df.csv 
 
 3. dividing the training set and testing set
 - code: [get_train_test.py](https://github.com/Snowing-ST/Construction-and-Application-of-Online-News-Sentiment-Index/blob/master/3%20get_train_test.py)
 - description:
-
     - divide the training set and testing set according to the year and keywords
     - artificially label the new in training set with “positive”, “neutral” and “negative”
+
 4. new text preprocess
 - code: [text_preprocess.py](https://github.com/Snowing-ST/Construction-and-Application-of-Online-News-Sentiment-Index/blob/master/4%20text_preprocess.py)
 - description:
-
     - Word Segmentation with jieba
     - remove stop words
 
 5. traditional text classification with VSM
-
 - code: [Vector_Space_Model.py](https://github.com/Snowing-ST/Construction-and-Application-of-Online-News-Sentiment-Index/blob/master/5%20Vector_Space_Model.py)
 - description:
-
     - text representation: TF-IDF
     - classification model ：logistic、Naïve Bayes、SVM
     - best model ：SVM+TF-IDF, accuracy:77%
 
 6. text classification with deep learning algorithm
-
 - code: [word2vec+SVM_CNN](https://github.com/Snowing-ST/Construction-and-Application-of-Online-News-Sentiment-Index/tree/master/6%20word2vec%2BSVM_CNN)
 - description:
-
     - text representation: word2vec pretrained by [Chinese Word Vectors](https://github.com/Embedding/Chinese-Word-Vectors)
     - classification model ：CNN、RNN
     - best model ：CNN+word2vec, accuracy:84%
+
 7.  computing *Online News Sentiment Index*
 - code: [get_index.py](https://github.com/Snowing-ST/Construction-and-Application-of-Online-News-Sentiment-Index/tree/master/7%20get_index.py)
 - description:
-
     - label unlabeled news with CNN+word2vec 
     - compute six sub-indexes and *Online News Sentiment Index*
 
@@ -71,10 +66,10 @@ The paper starts from the six dimensions (economic development, employment statu
 - description:
     - compare the sub-indexes with the macroeconomic indicators 
     - compare the *Online News Sentiment Index* with traditional consumer confidence indexes, Consumer Confidence Index(CCI) released by National Bureau of Statistics and China Consumer Confidence Index(CCCI) released by academic institutions
-8. predicting China Consumer Confidence Index(CCCI) by *Online News Sentiment Index*
+
+9. predicting CCCI by *Online News Sentiment Index*
 - code: [Time_Series_Analysis.R](https://github.com/Snowing-ST/Construction-and-Application-of-Online-News-Sentiment-Index/tree/master/8%20Time_Series_Analysis.R)
 - description:
-
     - use *Online News Sentiment Index* to predict CCCI
     - use six sub-indexes to predict CCCI
     - Time Series Analysis method: co-integration, regression, ARIMAX, VAR, VARX
