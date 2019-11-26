@@ -12,7 +12,18 @@ import numpy as np
 import os
 import re
 
-
+def get_index(data,prefix):
+    """从打好标签的文本中计算出每个季度的指数"""
+    grouped = data.groupby(["year","quarter"])
+    get_index = lambda x:(sum(x==1)-sum(x==-1))/(sum(x==1)+sum(x==-1))
+#    grouped.agg({"label":["count"]}) #每个季度多少条
+    consumer_index = grouped.agg({"label":[get_index]}) #季度指数
+    consumer_index.columns = consumer_index.columns.droplevel(1) #去除多重索引
+    
+    consumer_index["index"+"_"+prefix] = 100+consumer_index["label"]
+    
+    return consumer_index
+    
 def batch_read_index(path):
     classes = os.listdir(path)
     all_index = pd.DataFrame()

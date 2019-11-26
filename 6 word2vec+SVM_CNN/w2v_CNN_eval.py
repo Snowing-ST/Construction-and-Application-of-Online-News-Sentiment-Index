@@ -11,7 +11,7 @@ import os
 os.chdir("E:/graduate/Paper/code/")
 import w2v_CNN_data_helpers as CNN_data_helpers
 os.chdir("E:/graduate/Paper/code/")
-from VSM import get_index
+from get_index import get_index
 os.chdir("E:/graduate/Paper")
 
 # Parameters
@@ -124,6 +124,21 @@ print("训练集指数与全集指数的相关系数为：%0.4f"%(consumer_index
 
 consumer_index[["index_train","index_test"]].plot()
 
+
+# 爬取新一段时间的新闻样本，只有测试集
+# 测试集全部打标签后，根据打标签的文本计算分指数和总指数
+os.chdir("E:/graduate/Paper")
+classes = os.listdir(FLAGS.path)
+all_index = pd.DataFrame()
+for asp in classes:
+    data_test = pd.read_csv(os.path.join(FLAGS.path+asp,"test_CNN.csv"),encoding="gb18030",engine="python")
+    consumer_index_test = get_index(data_test,prefix="test")
+    consumer_index_test.rename(columns = {"index_test":asp},inplace = True)
+    all_index = pd.concat([all_index,consumer_index_test[asp]],axis=1)
+all_index.reset_index(["year","quarter"], inplace=True)
+all_index.head()
+all_index["index_test"] = np.sum(all_index.ix[:,:6],axis=1)-500
+all_index.to_csv("renew_CNN指数.csv",encoding="gb18030",index=False)
 
 
 

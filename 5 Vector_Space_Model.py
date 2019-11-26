@@ -201,19 +201,6 @@ def evaluate(actual, pred):
     # print('recall:{0:0.3f}'.format(m_recall)) #二分类使用
     print("confusion matrix:\n",metrics.confusion_matrix(actual, pred))
 
-def get_index(data,prefix):
-    """从打好标签的文本中计算出每个季度的指数"""
-    grouped = data.groupby(["year","quarter"])
-    get_index = lambda x:(sum(x==1)-sum(x==-1))/(sum(x==1)+sum(x==-1))
-#    grouped.agg({"label":["count"]}) #每个季度多少条
-    consumer_index = grouped.agg({"label":[get_index]}) #季度指数
-    consumer_index.columns = consumer_index.columns.droplevel(1) #去除多重索引
-    
-    consumer_index["index"+"_"+prefix] = 100+consumer_index["label"]
-    
-    return consumer_index
-    
-    
     
 def main():  
     os.chdir("E:/graduate/Paper/")
@@ -290,46 +277,3 @@ def main():
 
 if __name__ == '__main__':
     main()    
-
-
-    
-#单双元-----------------------------------------------------------------------------------------
-#    data_tfidf, tags = vectorize(data,word_name = "word_seg",tag_name="label",vectype = "tf-idf",ngram_range=(0,2),max_features=None)
-#    data_tfidf, tags = vectorize(data1,word_name = "rm_low_high_freq",tag_name="label",vectype = "tf-idf",ngram_range=(0,2),max_features=None)
-#
-#    cv = KFold(n_splits=10, shuffle=True, random_state=1994)
-#    print("NB cv accuracy is ",train_NB(data_tfidf, tags,cv,0.18))
-#    print("logistic cv accuracy is ",train_lg(data_tfidf, tags,cv,tol=0.1,C=28))
-#    print("rf cv accuracy is ",train_rf(data_tfidf, tags,cv,n_trees=50))
-#    
-#    print("adaboost cv accuracy is ",train_ada(data_tfidf, tags,cv,n_trees=150,lr=0.7))
-#    #学习率越小，所需迭代次数越多
-#    print("svm cv accuracy is ",train_SVM(data_tfidf, tags,cv,C=10,gamma=0.7,lr=1))
-
-
-#one-hot----------------------------------------------------------------------------------
-    
-#    data1 = rm_low_high_freq(clean_text,data,low_freq=1,high_topK=15) #除去高频词
-#    data1.shape
-#    view_keywords(data1,word_name = "rm_low_high_freq",tag_name="label")
-#    data_tfidf, tags = vectorize(data1,word_name = "word_seg",tag_name="label",vectype = "one-hot",ngram_range=(0,1),max_features=1000)
-#
-#    cv = KFold(n_splits=10, shuffle=True, random_state=1994)
-#    print("NB cv accuracy is ",train_NB(data_tfidf, tags,cv,0.7))
-#    print("logistic cv accuracy is ",train_lg(data_tfidf, tags,cv,tol=0.01,C=10))
-#    print("rf cv accuracy is ",train_rf(data_tfidf, tags,cv,n_trees=50))
-#    
-#    print("adaboost cv accuracy is ",train_ada(data_tfidf, tags,cv,n_trees=200,lr=1))
-#    #学习率越小，所需迭代次数越多
-#    print("svm cv accuracy is ",train_SVM(data_tfidf, tags,cv,C=15,gamma=0.05,lr=1))
-
-
-
-    
-    
-
-
-
-
-
-

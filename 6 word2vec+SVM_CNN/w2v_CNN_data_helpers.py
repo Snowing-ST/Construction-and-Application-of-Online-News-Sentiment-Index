@@ -6,18 +6,20 @@ os.chdir("E:/graduate/Paper/code/")
 from read_w2v_model import get_asp_w2v
 os.chdir("E:/graduate/Paper/")
 
-def load_data_and_labels(aspect,file_name,set_sequence_length=None,istest=False):
+def load_data_and_labels(path,aspect,file_name,set_sequence_length=None,istest=False):
     """
     Loads MR polarity data from files, splits the data into words and generates labels.
     Returns split sentences and labels.
     """
 #    aspect="经济"  
 #    file_name = "train.csv"
-    data_train = pd.read_csv(os.path.join("./raw_data/"+aspect,file_name),sep = ",",encoding="gb18030",engine="python")
+#    可能是训练集，可能是测试集，只是导入数据而已
+#    path = "./raw_data/"
+    data_train = pd.read_csv(os.path.join(path+aspect,file_name),sep = ",",encoding="gb18030",engine="python")
 #    x_text = [w.split() for w in data_train["word_seg"]]
 #    x_text,sequence_length = get_word2vec(x_text,size=embedded_size,min_count =min_count ,window = 5,method="padding",seq_dim=2)
-    if istest:
-        ASPECT_WORD2VEC = "./code/%s%sword2vec.pickle"%(aspect,"test")
+    if istest:#测试集无标签
+        ASPECT_WORD2VEC = path+aspect+"/%s%s_word2vec.pickle"%(aspect,"test")
         y = np.zeros((len(data_train)),int)
     else:
         ASPECT_WORD2VEC = "./code/%sword2vec.pickle"%aspect
